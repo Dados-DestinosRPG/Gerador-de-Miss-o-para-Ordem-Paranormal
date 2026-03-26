@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Missões - Ordem Paranormal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #090909;
+      --bg-soft: #111111;
+      --panel: rgba(14, 14, 14, 0.96);
+      --panel-2: rgba(22, 22, 22, 0.94);
+      --text: #e8e1d4;
+      --muted: #9f9687;
+      --blood: #8b1111;
+      --blood-strong: #b31313;
+      --line: rgba(214, 197, 170, 0.14);
+      --gold-dirty: #b8a27a;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+      --radius: 18px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at top, rgba(139, 17, 17, 0.18), transparent 35%),
+        radial-gradient(circle at bottom, rgba(184, 162, 122, 0.06), transparent 40%),
+        linear-gradient(180deg, #050505 0%, #0a0a0a 100%);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background:
+        repeating-linear-gradient(0deg,
+          rgba(255, 255, 255, 0.015) 0,
+          rgba(255, 255, 255, 0.015) 1px,
+          transparent 1px,
+          transparent 3px);
+      mix-blend-mode: soft-light;
+      opacity: 0.35;
+    }
+
+    body::after {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.04), transparent 20%),
+        radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.03), transparent 18%),
+        radial-gradient(circle at 40% 80%, rgba(139, 17, 17, 0.07), transparent 25%);
+      opacity: 0.6;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(17, 17, 17, 0.96), rgba(10, 10, 10, 0.98));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(184, 162, 122, 0.05), transparent 30%),
+        linear-gradient(315deg, rgba(139, 17, 17, 0.08), transparent 35%);
+      pointer-events: none;
+    }
+
+    .hero {
+      position: relative;
+      padding: 28px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+        radial-gradient(circle at top center, rgba(139, 17, 17, 0.14), transparent 45%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blood-strong), transparent);
+      box-shadow: 0 0 18px rgba(179, 19, 19, 0.45);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border: 1px solid rgba(184, 162, 122, 0.22);
+      border-radius: 999px;
+      background: rgba(139, 17, 17, 0.16);
+      color: var(--gold-dirty);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 1.15;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(139, 17, 17, 0.18);
+      margin-bottom: 14px;
+    }
+
+    .hero p,
+    .feature p,
+    footer {
+      color: var(--muted);
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 14px 18px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      color: #f6eee2;
+      border: 1px solid rgba(179, 19, 19, 0.7);
+      background:
+        linear-gradient(180deg, rgba(179, 19, 19, 0.9), rgba(107, 8, 8, 0.95));
+      box-shadow: 0 8px 24px rgba(139, 17, 17, 0.25);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 28px rgba(139, 17, 17, 0.36);
+      border-color: rgba(220, 80, 80, 0.85);
+    }
+
+    .btn-secondary {
+      color: var(--gold-dirty);
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(184, 162, 122, 0.22);
+      backdrop-filter: blur(2px);
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(184, 162, 122, 0.45);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    }
+
+    .content {
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature {
+      position: relative;
+      padding: 20px 18px;
+      text-align: center;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)),
+        var(--panel-2);
+      overflow: hidden;
+    }
+
+    .feature::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-dirty), transparent);
+      opacity: 0.7;
+    }
+
+    .feature h2 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .feature p {
+      font-size: 0.95rem;
+      max-width: 100%;
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px 20px 24px;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(214, 197, 170, 0.08);
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 28px;
+      }
+
+      .hero {
+        padding: 54px 42px;
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+
+      .actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .content {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrapper">
+    <section class="card">
+      <div class="hero">
+        <span class="badge">Feito de fã para fã</span>
+        <h1>Gerador de Missões</h1>
+        <p>
+          Um simples gerador de missões para o jogo de RPG Ordem Paranormal.<br />
+          O gerador utiliza tabelas aleatórias para sortear uma nova missão a cada click.
+        </p>
+
+        <div class="actions">
+          <a href="#" class="btn btn-primary" onClick="renderMissao()">Nova Missão</a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="grid">
+          <article class="feature">
+            <h2>Início</h2>
+            <p id="um"></p>
+          </article>
+
+          <article class="feature">
+            <h2>Desenvolvimento</h2>
+            <p id="dois"></p>
+          </article>
+
+          <article class="feature">
+            <h2>Reviravolta</h2>
+            <p id="tres"></p>
+          </article>
+        </div>
+      </div>
+
+      <footer>
+        @dadosedestinosrpg
+      </footer>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+</body>
+
+</html>
